@@ -1,0 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Device {
+  id           String        @id @default(cuid())
+  name         String
+  location     String
+  accessKey    String        @map("access_key")
+  accessToken  String        @map("access_token")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  healthReports HealthReport[]
+
+  @@unique([name, location])
+  @@map("devices")
+}
+
+model HealthReport {
+  id        String   @id @default(cuid())
+  deviceId  String   @map("device_id")
+  device    Device   @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  timestamp DateTime @default(now())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("health_reports")
+} 
