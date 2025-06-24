@@ -194,8 +194,8 @@ export function AggregatedTimeline({ timelines }: AggregatedTimelineProps) {
                   margin={{
                     top: 10,
                     right: 20,
-                    left: 30,
-                    bottom: 30,
+                    left: 20,
+                    bottom: 50,
                   }}
                   barCategoryGap="10%"
                   maxBarSize={40}
@@ -212,22 +212,17 @@ export function AggregatedTimeline({ timelines }: AggregatedTimelineProps) {
                   </defs>
                   <CartesianGrid strokeDasharray="2 2" stroke="hsl(var(--border))" opacity={0.5} />
                   <XAxis 
-                    dataKey="timestamp"
-                    type="number"
-                    scale="time"
-                    domain={['dataMin', 'dataMax']}
-                    tickFormatter={(value) => {
-                      const date = new Date(value)
-                      return selectedPeriod === '1day' 
-                        ? date.toLocaleDateString([], { month: 'short', day: 'numeric' })
-                        : date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-                    }}
+                    dataKey="timeLabel"
                     tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }}
-                    height={30}
+                    height={50}
+                    angle={-45}
+                    textAnchor="end"
+                    interval="preserveStartEnd"
                   />
                   <YAxis 
+                    label={{ value: 'Devices', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: 'hsl(var(--foreground))', fontSize: '10px' } }}
                     tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }}
-                    width={30}
+                    width={50}
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <Bar 
