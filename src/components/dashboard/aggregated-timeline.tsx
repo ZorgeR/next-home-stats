@@ -42,14 +42,19 @@ export function AggregatedTimeline({ timelines }: AggregatedTimelineProps) {
     if (allTimestamps.length === 0) return []
 
     const minTime = Math.min(...allTimestamps)
-    const maxTime = Math.max(...allTimestamps, Date.now())
+    const maxTime = Math.max(...allTimestamps)
+    const now = Date.now()
     
     // Create time buckets
     const buckets = new Map<number, { online: Set<string>, offline: Set<string> }>()
     
     // Round down to nearest period boundary
     const startTime = Math.floor(minTime / periodMs) * periodMs
-    const endTime = Math.ceil(maxTime / periodMs) * periodMs
+    // Don't go beyond current time - round down to avoid future buckets
+    const endTime = Math.min(
+      Math.floor(Math.max(maxTime, now) / periodMs) * periodMs,
+      Math.floor(now / periodMs) * periodMs
+    )
     
     // Initialize buckets
     for (let time = startTime; time <= endTime; time += periodMs) {
