@@ -2,7 +2,7 @@
 
 A modern, real-time device health monitoring dashboard built with Next.js. Track the status and uptime of all your devices from a single, beautiful interface.
 
-![Dashboard Preview](https://via.placeholder.com/800x400/000000/FFFFFF?text=Device+Health+Monitor+Dashboard)
+![Dashboard Preview](./public/dashboard.jpg)
 
 ## ✨ Features
 
