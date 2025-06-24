@@ -5,6 +5,7 @@ import { StatsCards } from '@/components/dashboard/stats-cards'
 import { DevicesTable } from '@/components/dashboard/devices-table'
 import { TimelineChart } from '@/components/dashboard/timeline-chart'
 import { AggregatedTimeline } from '@/components/dashboard/aggregated-timeline'
+import { Button } from '@/components/ui/button'
 import { RefreshCw } from 'lucide-react'
 
 interface DashboardData {
@@ -127,12 +128,9 @@ export default function HomePage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-600 mb-4">Error: {error}</p>
-          <button
-            onClick={fetchData}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
+          <Button onClick={fetchData} className="bg-blue-600 hover:bg-blue-700">
             Retry
-          </button>
+          </Button>
         </div>
       </div>
     )
@@ -162,27 +160,27 @@ export default function HomePage() {
                 Last updated: {lastUpdated.toLocaleTimeString()}
               </p>
             )}
-            <button
+            <Button
               onClick={fetchData}
               disabled={loading}
-              className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+              className="bg-blue-600 hover:bg-blue-700"
             >
-              <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-              <span>Refresh</span>
-            </button>
+              <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+              Refresh
+            </Button>
           </div>
         </div>
 
-                 <div className="space-y-8">
-           <StatsCards summary={data.summary} />
-           
-           <AggregatedTimeline timelines={data.timelines} />
-           
-           <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-             <DevicesTable devices={data.devices} />
-             <TimelineChart timelines={data.timelines} />
-           </div>
-         </div>
+        <div className="space-y-8">
+          <StatsCards summary={data.summary} />
+          
+          <AggregatedTimeline timelines={data.timelines} />
+          
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+            <DevicesTable devices={data.devices} />
+            <TimelineChart timelines={data.timelines} />
+          </div>
+        </div>
       </div>
     </div>
   )
