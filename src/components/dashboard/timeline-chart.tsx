@@ -45,45 +45,45 @@ export function TimelineChart({ timelines, selectedDevice: initialSelectedDevice
     if (active && payload && payload.length) {
       const data = payload[0].payload
       return (
-        <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-xl backdrop-blur-sm max-w-sm">
+        <div className="bg-card p-4 border border-border rounded-lg shadow-xl backdrop-blur-sm max-w-sm">
           <div className="flex items-center gap-2 mb-3">
-            <div className="p-1 bg-blue-100 rounded">
-              <Monitor className="h-4 w-4 text-blue-600" />
+            <div className="p-1 bg-primary/10 rounded">
+              <Monitor className="h-4 w-4 text-primary" />
             </div>
             <div>
-              <p className="font-semibold text-gray-900">{data.device}</p>
-              <div className="flex items-center gap-1 text-xs text-gray-500">
+              <p className="font-semibold text-card-foreground">{data.device}</p>
+              <div className="flex items-center gap-1 text-xs text-muted-foreground">
                 <MapPin className="h-3 w-3" />
                 <span>{data.location}</span>
               </div>
             </div>
           </div>
           <div className="space-y-2">
-            <div className="flex items-center justify-between p-2 bg-gray-50 rounded">
+            <div className="flex items-center justify-between p-2 bg-muted rounded">
               <div className="flex items-center gap-2">
                 <div className={`w-3 h-3 rounded-full ${data.status === 'online' ? 'bg-emerald-500' : 'bg-red-500'}`}></div>
-                <span className={`text-sm font-medium ${data.status === 'online' ? 'text-emerald-700' : 'text-red-700'}`}>
+                <span className={`text-sm font-medium ${data.status === 'online' ? 'text-emerald-400' : 'text-red-400'}`}>
                   {data.status.toUpperCase()}
                 </span>
               </div>
               {data.status === 'online' && (
                 <div className="flex items-center gap-1">
-                  <Activity className="h-3 w-3 text-blue-500" />
-                  <span className="text-xs text-blue-600 font-medium">{data.efficiency.toFixed(0)}% efficiency</span>
+                  <Activity className="h-3 w-3 text-blue-400" />
+                  <span className="text-xs text-blue-400 font-medium">{data.efficiency.toFixed(0)}% efficiency</span>
                 </div>
               )}
             </div>
             <div className="space-y-1 text-sm">
               <div className="flex items-center justify-between">
-                <span className="text-gray-600 flex items-center gap-1">
+                <span className="text-muted-foreground flex items-center gap-1">
                   <Clock className="h-3 w-3" />
                   Start Time
                 </span>
-                <span className="font-medium text-gray-900">{data.startTime}</span>
+                <span className="font-medium text-card-foreground">{data.startTime}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-600">Duration</span>
-                <span className="font-bold text-blue-600">{data.durationText}</span>
+                <span className="text-muted-foreground">Duration</span>
+                <span className="font-bold text-blue-400">{data.durationText}</span>
               </div>
             </div>
           </div>
@@ -98,8 +98,8 @@ export function TimelineChart({ timelines, selectedDevice: initialSelectedDevice
   const totalDuration = chartData.reduce((acc, d) => acc + d.duration, 0)
 
   return (
-    <Card className="bg-gradient-to-br from-purple-50 to-pink-50 border-purple-200 shadow-lg">
-      <CardHeader className="bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-t-lg">
+    <Card className="bg-gradient-to-br from-slate-900 to-slate-800 border-slate-700 shadow-lg">
+      <CardHeader className="bg-gradient-to-r from-slate-700 to-slate-600 text-white rounded-t-lg">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-white/20 rounded-lg">
@@ -125,7 +125,7 @@ export function TimelineChart({ timelines, selectedDevice: initialSelectedDevice
                       <Monitor className="h-3 w-3" />
                       <div>
                         <div className="font-medium">{device.name}</div>
-                        <div className="text-xs text-gray-500">{device.location}</div>
+                        <div className="text-xs text-muted-foreground">{device.location}</div>
                       </div>
                     </div>
                   </SelectItem>
@@ -139,33 +139,33 @@ export function TimelineChart({ timelines, selectedDevice: initialSelectedDevice
         {chartData.length > 0 ? (
           <div className="space-y-4">
             <div className="grid grid-cols-3 gap-4 mb-4">
-              <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+              <div className="bg-card rounded-lg border border-border p-4 shadow-sm">
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
-                  <span className="text-sm font-medium text-gray-700">Online Events</span>
+                  <span className="text-sm font-medium text-card-foreground">Online Events</span>
                 </div>
-                <div className="text-2xl font-bold text-emerald-600">{onlineData.length}</div>
-                <div className="text-xs text-gray-500">{((onlineData.length / chartData.length) * 100).toFixed(1)}% of total</div>
+                <div className="text-2xl font-bold text-emerald-400">{onlineData.length}</div>
+                <div className="text-xs text-muted-foreground">{((onlineData.length / chartData.length) * 100).toFixed(1)}% of total</div>
               </div>
-              <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+              <div className="bg-card rounded-lg border border-border p-4 shadow-sm">
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                  <span className="text-sm font-medium text-gray-700">Offline Events</span>
+                  <span className="text-sm font-medium text-card-foreground">Offline Events</span>
                 </div>
-                <div className="text-2xl font-bold text-red-600">{offlineData.length}</div>
-                <div className="text-xs text-gray-500">{((offlineData.length / chartData.length) * 100).toFixed(1)}% of total</div>
+                <div className="text-2xl font-bold text-red-400">{offlineData.length}</div>
+                <div className="text-xs text-muted-foreground">{((offlineData.length / chartData.length) * 100).toFixed(1)}% of total</div>
               </div>
-              <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+              <div className="bg-card rounded-lg border border-border p-4 shadow-sm">
                 <div className="flex items-center gap-2 mb-2">
-                  <Clock className="w-3 h-3 text-blue-500" />
-                  <span className="text-sm font-medium text-gray-700">Avg Duration</span>
+                  <Clock className="w-3 h-3 text-blue-400" />
+                  <span className="text-sm font-medium text-card-foreground">Avg Duration</span>
                 </div>
-                <div className="text-2xl font-bold text-blue-600">{(totalDuration / chartData.length).toFixed(0)}m</div>
-                <div className="text-xs text-gray-500">per event</div>
+                <div className="text-2xl font-bold text-blue-400">{(totalDuration / chartData.length).toFixed(0)}m</div>
+                <div className="text-xs text-muted-foreground">per event</div>
               </div>
             </div>
 
-            <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+            <div className="bg-card rounded-lg border border-border p-4 shadow-sm">
               <ResponsiveContainer width="100%" height={400}>
                 <BarChart
                   data={chartData}
@@ -188,7 +188,7 @@ export function TimelineChart({ timelines, selectedDevice: initialSelectedDevice
                       <stop offset="95%" stopColor="#b91c1c" stopOpacity={0.6}/>
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" opacity={0.5} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.5} />
                   <XAxis 
                     dataKey="timestamp"
                     type="number"
@@ -196,31 +196,23 @@ export function TimelineChart({ timelines, selectedDevice: initialSelectedDevice
                     domain={['dataMin', 'dataMax']}
                     tickFormatter={(value) => {
                       const date = new Date(value)
-                      return date.toLocaleDateString([], { month: 'short', day: 'numeric' }) + '\n' + 
-                             date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                     }}
                     angle={-45}
                     textAnchor="end"
                     height={70}
-                    interval={Math.max(1, Math.floor(chartData.length / 10))}
-                    tick={{ fontSize: 11, fill: '#64748b' }}
+                    tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
                   />
                   <YAxis 
-                    width={50}
-                    label={{ 
-                      value: 'Duration (minutes)', 
-                      angle: -90, 
-                      position: 'insideLeft',
-                      style: { textAnchor: 'middle', fill: '#475569', fontSize: '12px', fontWeight: 'bold' }
-                    }}
-                    tick={{ fontSize: 11, fill: '#64748b' }}
+                    label={{ value: 'Duration (min)', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: 'hsl(var(--foreground))', fontSize: '12px' } }}
+                    tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <Brush 
                     dataKey="timestamp" 
                     height={25} 
                     stroke="#a855f7" 
-                    fill="#faf5ff"
+                    fill="hsl(var(--muted))"
                     travellerWidth={12}
                   />
                   <Bar dataKey="duration" name="Duration" barSize={12} radius={[2, 2, 0, 0]}>
@@ -236,16 +228,16 @@ export function TimelineChart({ timelines, selectedDevice: initialSelectedDevice
             </div>
             
             <div className="flex items-center justify-center">
-              <div className="flex items-center space-x-8 bg-white rounded-lg border border-gray-200 px-6 py-3 shadow-sm">
+              <div className="flex items-center space-x-8 bg-card rounded-lg border border-border px-6 py-3 shadow-sm">
                 <div className="flex items-center space-x-3">
                   <div className="w-4 h-4 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-sm shadow-sm"></div>
-                  <span className="text-sm font-semibold text-gray-700">Online Period</span>
+                  <span className="text-sm font-semibold text-card-foreground">Online Period</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="w-4 h-4 bg-gradient-to-r from-red-500 to-red-600 rounded-sm shadow-sm"></div>
-                  <span className="text-sm font-semibold text-gray-700">Offline Period</span>
+                  <span className="text-sm font-semibold text-card-foreground">Offline Period</span>
                 </div>
-                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                   <Activity className="h-4 w-4" />
                   <span>Device Activity Timeline</span>
                 </div>
@@ -254,11 +246,11 @@ export function TimelineChart({ timelines, selectedDevice: initialSelectedDevice
           </div>
         ) : (
           <div className="text-center py-12">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-              <Monitor className="h-8 w-8 text-gray-400" />
+            <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-full flex items-center justify-center">
+              <Monitor className="h-8 w-8 text-muted-foreground" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No Device Timeline Data</h3>
-            <p className="text-gray-600">Select a device or wait for activity data to appear.</p>
+            <h3 className="text-lg font-semibold text-foreground mb-2">No Device Timeline Data</h3>
+            <p className="text-muted-foreground">Select a device or wait for activity data to appear.</p>
           </div>
         )}
       </CardContent>

@@ -123,34 +123,34 @@ export function AggregatedTimeline({ timelines }: AggregatedTimelineProps) {
     if (active && payload && payload.length) {
       const data = payload[0].payload
       return (
-        <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-xl backdrop-blur-sm">
+        <div className="bg-card p-4 border border-border rounded-lg shadow-xl backdrop-blur-sm">
           <div className="flex items-center gap-2 mb-2">
-            <Clock className="h-4 w-4 text-blue-600" />
-            <p className="font-semibold text-gray-900">{data.timeLabel}</p>
+            <Clock className="h-4 w-4 text-primary" />
+            <p className="font-semibold text-card-foreground">{data.timeLabel}</p>
           </div>
           <div className="space-y-1">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
-                <span className="text-sm text-emerald-700 font-medium">Online</span>
+                <span className="text-sm text-emerald-400 font-medium">Online</span>
               </div>
-              <span className="text-sm font-bold text-emerald-800">{data.online} devices</span>
+              <span className="text-sm font-bold text-emerald-400">{data.online} devices</span>
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                <span className="text-sm text-red-700 font-medium">Offline</span>
+                <span className="text-sm text-red-400 font-medium">Offline</span>
               </div>
-              <span className="text-sm font-bold text-red-800">{data.offline} devices</span>
+              <span className="text-sm font-bold text-red-400">{data.offline} devices</span>
             </div>
-            <div className="border-t pt-1 mt-2">
+            <div className="border-t border-border pt-1 mt-2">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Total</span>
-                <span className="text-sm font-bold text-gray-900">{data.total} devices</span>
+                <span className="text-sm text-muted-foreground">Total</span>
+                <span className="text-sm font-bold text-card-foreground">{data.total} devices</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">Uptime</span>
-                <span className="text-sm font-bold text-blue-600">{data.uptimePercentage.toFixed(1)}%</span>
+                <span className="text-sm text-muted-foreground">Uptime</span>
+                <span className="text-sm font-bold text-blue-400">{data.uptimePercentage.toFixed(1)}%</span>
               </div>
             </div>
           </div>
@@ -166,8 +166,8 @@ export function AggregatedTimeline({ timelines }: AggregatedTimelineProps) {
     : 0
 
   return (
-    <Card className="bg-gradient-to-br from-slate-50 to-blue-50 border-slate-200 shadow-lg">
-      <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg">
+    <Card className="bg-gradient-to-br from-slate-900 to-slate-800 border-slate-700 shadow-lg">
+      <CardHeader className="bg-gradient-to-r from-slate-700 to-slate-600 text-white rounded-t-lg">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-white/20 rounded-lg">
@@ -203,7 +203,7 @@ export function AggregatedTimeline({ timelines }: AggregatedTimelineProps) {
       <CardContent className="p-6">
         {aggregatedData.length > 0 ? (
           <div className="space-y-4">
-            <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+            <div className="bg-card rounded-lg border border-border p-4 shadow-sm">
               <ResponsiveContainer width="100%" height={400}>
                 <BarChart
                   data={aggregatedData}
@@ -213,6 +213,8 @@ export function AggregatedTimeline({ timelines }: AggregatedTimelineProps) {
                     left: 40,
                     bottom: 50,
                   }}
+                  barCategoryGap="20%"
+                  maxBarSize={50}
                 >
                   <defs>
                     <linearGradient id="onlineGradient" x1="0" y1="0" x2="0" y2="1">
@@ -224,7 +226,7 @@ export function AggregatedTimeline({ timelines }: AggregatedTimelineProps) {
                       <stop offset="95%" stopColor="#dc2626" stopOpacity={0.7}/>
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" opacity={0.7} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.7} />
                   <XAxis 
                     dataKey="timestamp"
                     type="number"
@@ -239,32 +241,34 @@ export function AggregatedTimeline({ timelines }: AggregatedTimelineProps) {
                     angle={-45}
                     textAnchor="end"
                     height={50}
-                    tick={{ fontSize: 12, fill: '#64748b' }}
+                    tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
+                    interval="preserveStartEnd"
                   />
                   <YAxis 
-                    label={{ value: 'Device Count', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#475569', fontSize: '14px', fontWeight: 'bold' } }}
-                    tick={{ fontSize: 12, fill: '#64748b' }}
+                    label={{ value: 'Device Count', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: 'hsl(var(--foreground))', fontSize: '14px', fontWeight: 'bold' } }}
+                    tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
+                    width={40}
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <Legend 
                     verticalAlign="top" 
                     height={36}
                     iconType="rect"
-                    wrapperStyle={{ paddingBottom: '20px', fontSize: '14px', fontWeight: 'bold' }}
+                    wrapperStyle={{ paddingBottom: '20px', fontSize: '14px', fontWeight: 'bold', color: 'hsl(var(--foreground))' }}
                   />
                   <Brush 
                     dataKey="timestamp" 
                     height={30} 
                     stroke="#8b5cf6" 
-                    fill="#f3f4f6"
+                    fill="hsl(var(--muted))"
                     travellerWidth={15}
+                    startIndex={Math.max(0, aggregatedData.length - 20)}
                   />
                   <Bar 
                     dataKey="offline" 
                     stackId="devices" 
                     fill="url(#offlineGradient)" 
                     name="Offline Devices" 
-                    barSize={20}
                     radius={[0, 0, 2, 2]}
                   />
                   <Bar 
@@ -272,7 +276,6 @@ export function AggregatedTimeline({ timelines }: AggregatedTimelineProps) {
                     stackId="devices" 
                     fill="url(#onlineGradient)" 
                     name="Online Devices" 
-                    barSize={20}
                     radius={[2, 2, 0, 0]}
                   />
                 </BarChart>
@@ -280,16 +283,16 @@ export function AggregatedTimeline({ timelines }: AggregatedTimelineProps) {
             </div>
             
             <div className="flex items-center justify-center">
-              <div className="flex items-center space-x-8 bg-white rounded-lg border border-gray-200 px-6 py-3 shadow-sm">
+              <div className="flex items-center space-x-8 bg-card rounded-lg border border-border px-6 py-3 shadow-sm">
                 <div className="flex items-center space-x-3">
                   <div className="w-4 h-4 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-sm shadow-sm"></div>
-                  <span className="text-sm font-semibold text-gray-700">Online Devices</span>
+                  <span className="text-sm font-semibold text-card-foreground">Online Devices</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="w-4 h-4 bg-gradient-to-r from-red-500 to-red-600 rounded-sm shadow-sm"></div>
-                  <span className="text-sm font-semibold text-gray-700">Offline Devices</span>
+                  <span className="text-sm font-semibold text-card-foreground">Offline Devices</span>
                 </div>
-                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                   <Clock className="h-4 w-4" />
                   <span>Period: {TIME_PERIODS[selectedPeriod].label}</span>
                 </div>
@@ -298,11 +301,11 @@ export function AggregatedTimeline({ timelines }: AggregatedTimelineProps) {
           </div>
         ) : (
           <div className="text-center py-12">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-              <Activity className="h-8 w-8 text-gray-400" />
+            <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-full flex items-center justify-center">
+              <Activity className="h-8 w-8 text-muted-foreground" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No Timeline Data</h3>
-            <p className="text-gray-600">Start monitoring devices to see timeline data here.</p>
+            <h3 className="text-lg font-semibold text-foreground mb-2">No Timeline Data</h3>
+            <p className="text-muted-foreground">Start monitoring devices to see timeline data here.</p>
           </div>
         )}
       </CardContent>

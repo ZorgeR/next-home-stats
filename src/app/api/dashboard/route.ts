@@ -32,7 +32,7 @@ export async function GET() {
       : 0
 
     // Get locations summary
-    const locations = [...new Set(devices.map(device => device.location))]
+    const locations = Array.from(new Set(devices.map(device => device.location)))
     const locationStats = locations.map(location => {
       const locationDevices = deviceStatuses.filter(status => status.device.location === location)
       const onlineInLocation = locationDevices.filter(status => status.status === 'online').length

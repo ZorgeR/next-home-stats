@@ -55,7 +55,7 @@ export function DevicesTable({ devices }: DevicesTableProps) {
                   </td>
                   <td className="py-2 px-4">
                     <div className="flex items-center space-x-2">
-                      <div className="w-12 bg-gray-200 rounded-full h-2">
+                      <div className="w-12 bg-muted rounded-full h-2">
                         <div 
                           className={`h-2 rounded-full ${
                             deviceStatus.uptime > 90 ? 'bg-green-500' :

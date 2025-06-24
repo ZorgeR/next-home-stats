@@ -114,10 +114,10 @@ export default function HomePage() {
 
   if (loading && !data) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading dashboard...</p>
+          <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-muted-foreground" />
+          <p className="text-muted-foreground">Loading dashboard...</p>
         </div>
       </div>
     )
@@ -125,10 +125,10 @@ export default function HomePage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <p className="text-red-600 mb-4">Error: {error}</p>
-          <Button onClick={fetchData} className="bg-blue-600 hover:bg-blue-700">
+          <p className="text-destructive mb-4">Error: {error}</p>
+          <Button onClick={fetchData} className="bg-primary hover:bg-primary/90">
             Retry
           </Button>
         </div>
@@ -138,32 +138,32 @@ export default function HomePage() {
 
   if (!data) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <p className="text-gray-600">No data available</p>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <p className="text-muted-foreground">No data available</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto py-8 px-4">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Device Health Dashboard</h1>
-            <p className="text-gray-600 mt-2">
+            <h1 className="text-3xl font-bold text-foreground">Device Health Dashboard</h1>
+            <p className="text-muted-foreground mt-2">
               Monitor your devices in real-time
             </p>
           </div>
           <div className="flex items-center space-x-4">
             {lastUpdated && (
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 Last updated: {lastUpdated.toLocaleTimeString()}
               </p>
             )}
             <Button
               onClick={fetchData}
               disabled={loading}
-              className="bg-blue-600 hover:bg-blue-700"
+              className="bg-primary hover:bg-primary/90"
             >
               <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
               Refresh
