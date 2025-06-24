@@ -109,7 +109,7 @@ export function AggregatedTimeline({ timelines }: AggregatedTimelineProps) {
     return Array.from(buckets.entries())
       .map(([time, data]) => ({
         timestamp: time,
-        timeLabel: formatDate(new Date(time)),
+        timeLabel: new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         online: data.online.size,
         offline: data.offline.size,
         total: data.online.size + data.offline.size,
@@ -195,7 +195,7 @@ export function AggregatedTimeline({ timelines }: AggregatedTimelineProps) {
                     top: 10,
                     right: 20,
                     left: 20,
-                    bottom: 50,
+                    bottom: 10,
                   }}
                   barCategoryGap="10%"
                   maxBarSize={40}
