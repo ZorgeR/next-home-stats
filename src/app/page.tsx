@@ -7,8 +7,10 @@ import { TimelineChart } from '@/components/dashboard/timeline-chart'
 import { AggregatedTimeline } from '@/components/dashboard/aggregated-timeline'
 import { Button } from '@/components/ui/button'
 import { RefreshCw, Activity, Shield } from 'lucide-react'
+import { DeviceStatus, DeviceTimeline } from '@/lib/types'
 
-interface DashboardData {
+// API response type (with string dates)
+interface DashboardApiResponse {
   summary: {
     totalDevices: number
     onlineDevices: number
@@ -50,6 +52,24 @@ interface DashboardData {
   }>
 }
 
+// Processed data type (with Date objects)
+interface DashboardData {
+  summary: {
+    totalDevices: number
+    onlineDevices: number
+    offlineDevices: number
+    averageUptime: number
+  }
+  locations: Array<{
+    location: string
+    total: number
+    online: number
+    offline: number
+  }>
+  devices: DeviceStatus[]
+  timelines: DeviceTimeline[]
+}
+
 export default function HomePage() {
   const [data, setData] = useState<DashboardData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -65,12 +85,12 @@ export default function HomePage() {
         throw new Error('Failed to fetch dashboard data')
       }
       
-      const dashboardData = await response.json()
+      const dashboardData: DashboardApiResponse = await response.json()
       
       // Convert string dates to Date objects
       const processedData: DashboardData = {
         ...dashboardData,
-        devices: dashboardData.devices.map((deviceStatus: any) => ({
+        devices: dashboardData.devices.map((deviceStatus) => ({
           ...deviceStatus,
           device: {
             ...deviceStatus.device,
@@ -79,14 +99,14 @@ export default function HomePage() {
           },
           lastSeen: deviceStatus.lastSeen ? new Date(deviceStatus.lastSeen) : null
         })),
-        timelines: dashboardData.timelines.map((timeline: any) => ({
+        timelines: dashboardData.timelines.map((timeline) => ({
           ...timeline,
           device: {
             ...timeline.device,
             createdAt: new Date(timeline.device.createdAt),
             updatedAt: new Date(timeline.device.updatedAt)
           },
-          timeline: timeline.timeline.map((point: any) => ({
+          timeline: timeline.timeline.map((point) => ({
             ...point,
             timestamp: new Date(point.timestamp)
           }))
