@@ -7,7 +7,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { DeviceTimeline } from "@/lib/types"
 import { formatDate } from "@/lib/utils"
 import { TimelineLegend } from "./timeline-legend"
-import { Clock, Zap, Activity } from "lucide-react"
+import { Clock, Activity, BarChart3 } from "lucide-react"
 
 interface AggregatedTimelineProps {
   timelines: DeviceTimeline[]
@@ -16,13 +16,13 @@ interface AggregatedTimelineProps {
 type TimePeriod = '5min' | '15min' | '30min' | '1hour' | '2hour' | '6hour' | '1day'
 
 const TIME_PERIODS = {
-  '5min': { label: '5 minutes', minutes: 5, icon: '⚡' },
-  '15min': { label: '15 minutes', minutes: 15, icon: '🔄' },
-  '30min': { label: '30 minutes', minutes: 30, icon: '⏰' },
-  '1hour': { label: '1 hour', minutes: 60, icon: '🕐' },
-  '2hour': { label: '2 hours', minutes: 120, icon: '🕑' },
-  '6hour': { label: '6 hours', minutes: 360, icon: '🕕' },
-  '1day': { label: '1 day', minutes: 1440, icon: '📅' }
+  '5min': { label: '5min', minutes: 5 },
+  '15min': { label: '15min', minutes: 15 },
+  '30min': { label: '30min', minutes: 30 },
+  '1hour': { label: '1hr', minutes: 60 },
+  '2hour': { label: '2hr', minutes: 120 },
+  '6hour': { label: '6hr', minutes: 360 },
+  '1day': { label: '1day', minutes: 1440 }
 }
 
 export function AggregatedTimeline({ timelines }: AggregatedTimelineProps) {
@@ -123,34 +123,24 @@ export function AggregatedTimeline({ timelines }: AggregatedTimelineProps) {
     if (active && payload && payload.length) {
       const data = payload[0].payload
       return (
-        <div className="bg-card p-4 border border-border rounded-lg shadow-xl backdrop-blur-sm">
+        <div className="bg-black border border-border rounded p-3 text-xs">
           <div className="flex items-center gap-2 mb-2">
-            <Clock className="h-4 w-4 text-primary" />
-            <p className="font-semibold text-card-foreground">{data.timeLabel}</p>
+            <Clock className="h-3 w-3 text-blue-400" />
+            <p className="font-semibold text-foreground compact-text">{data.timeLabel}</p>
           </div>
           <div className="space-y-1">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
-                <span className="text-sm text-emerald-400 font-medium">Online</span>
-              </div>
-              <span className="text-sm font-bold text-emerald-400">{data.online} devices</span>
+              <span className="text-emerald-400">Online</span>
+              <span className="text-emerald-400 font-mono">{data.online}</span>
             </div>
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                <span className="text-sm text-red-400 font-medium">Offline</span>
-              </div>
-              <span className="text-sm font-bold text-red-400">{data.offline} devices</span>
+              <span className="text-red-400">Offline</span>
+              <span className="text-red-400 font-mono">{data.offline}</span>
             </div>
-            <div className="border-t border-border pt-1 mt-2">
+            <div className="border-t border-border pt-1">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Total</span>
-                <span className="text-sm font-bold text-card-foreground">{data.total} devices</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Uptime</span>
-                <span className="text-sm font-bold text-blue-400">{data.uptimePercentage.toFixed(1)}%</span>
+                <span className="text-muted-foreground">Total</span>
+                <span className="text-foreground font-mono">{data.total}</span>
               </div>
             </div>
           </div>
@@ -166,67 +156,61 @@ export function AggregatedTimeline({ timelines }: AggregatedTimelineProps) {
     : 0
 
   return (
-    <Card className="bg-gradient-to-br from-slate-900 to-slate-800 border-slate-700 shadow-lg">
-      <CardHeader className="bg-gradient-to-r from-slate-700 to-slate-600 text-white rounded-t-lg">
+    <Card className="enterprise-card">
+      <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-white/20 rounded-lg">
-              <Activity className="h-6 w-6" />
-            </div>
+          <div className="flex items-center gap-2">
+            <BarChart3 className="h-4 w-4 text-primary" />
             <div>
-              <CardTitle className="text-xl font-bold">Device Count Timeline</CardTitle>
-              <p className="text-blue-100 text-sm mt-1">
-                Real-time device status aggregation • {totalDevices} total devices • {avgUptime.toFixed(1)}% avg uptime
+              <CardTitle className="text-sm font-bold text-foreground compact-text">
+                Device Status Timeline
+              </CardTitle>
+              <p className="text-xs text-muted-foreground compact-text">
+                {totalDevices} devices • {avgUptime.toFixed(1)}% avg uptime
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Zap className="h-4 w-4 text-yellow-300" />
-            <Select value={selectedPeriod} onValueChange={(value: TimePeriod) => setSelectedPeriod(value)}>
-              <SelectTrigger className="w-[200px] bg-white/10 border-white/30 text-white">
-                <SelectValue placeholder="Select period" />
-              </SelectTrigger>
-              <SelectContent>
-                {Object.entries(TIME_PERIODS).map(([key, { label, icon }]) => (
-                  <SelectItem key={key} value={key}>
-                    <div className="flex items-center gap-2">
-                      <span>{icon}</span>
-                      <span>{label}</span>
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          <Select value={selectedPeriod} onValueChange={(value: TimePeriod) => setSelectedPeriod(value)}>
+            <SelectTrigger className="w-[100px] h-8 bg-secondary border-border text-foreground text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.entries(TIME_PERIODS).map(([key, { label }]) => (
+                <SelectItem key={key} value={key} className="text-xs">
+                  {label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </CardHeader>
-      <CardContent className="p-6">
+      <CardContent className="p-4">
         {aggregatedData.length > 0 ? (
-          <div className="space-y-4">
-            <div className="bg-card rounded-lg border border-border p-4 shadow-sm">
-              <ResponsiveContainer width="100%" height={400}>
+          <div className="space-y-3">
+            <div className="enterprise-card border border-border rounded p-3">
+              <ResponsiveContainer width="100%" height={300}>
                 <BarChart
                   data={aggregatedData}
                   margin={{
-                    top: 20,
-                    right: 30,
-                    left: 40,
-                    bottom: 50,
+                    top: 10,
+                    right: 20,
+                    left: 30,
+                    bottom: 30,
                   }}
-                  barCategoryGap="20%"
-                  maxBarSize={50}
+                  barCategoryGap="10%"
+                  maxBarSize={40}
                 >
                   <defs>
                     <linearGradient id="onlineGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.9}/>
-                      <stop offset="95%" stopColor="#059669" stopOpacity={0.7}/>
+                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#059669" stopOpacity={0.6}/>
                     </linearGradient>
                     <linearGradient id="offlineGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#ef4444" stopOpacity={0.9}/>
-                      <stop offset="95%" stopColor="#dc2626" stopOpacity={0.7}/>
+                      <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#dc2626" stopOpacity={0.6}/>
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.7} />
+                  <CartesianGrid strokeDasharray="2 2" stroke="hsl(var(--border))" opacity={0.5} />
                   <XAxis 
                     dataKey="timestamp"
                     type="number"
@@ -238,74 +222,50 @@ export function AggregatedTimeline({ timelines }: AggregatedTimelineProps) {
                         ? date.toLocaleDateString([], { month: 'short', day: 'numeric' })
                         : date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                     }}
-                    angle={-45}
-                    textAnchor="end"
-                    height={50}
-                    tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
-                    interval="preserveStartEnd"
+                    tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }}
+                    height={30}
                   />
                   <YAxis 
-                    label={{ value: 'Device Count', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: 'hsl(var(--foreground))', fontSize: '14px', fontWeight: 'bold' } }}
-                    tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
-                    width={40}
+                    tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }}
+                    width={30}
                   />
                   <Tooltip content={<CustomTooltip />} />
-                  <Legend 
-                    verticalAlign="top" 
-                    height={36}
-                    iconType="rect"
-                    wrapperStyle={{ paddingBottom: '20px', fontSize: '14px', fontWeight: 'bold', color: 'hsl(var(--foreground))' }}
-                  />
-                  <Brush 
-                    dataKey="timestamp" 
-                    height={30} 
-                    stroke="#8b5cf6" 
-                    fill="hsl(var(--muted))"
-                    travellerWidth={15}
-                    startIndex={Math.max(0, aggregatedData.length - 20)}
-                  />
                   <Bar 
                     dataKey="offline" 
                     stackId="devices" 
                     fill="url(#offlineGradient)" 
-                    name="Offline Devices" 
-                    radius={[0, 0, 2, 2]}
+                    radius={[0, 0, 1, 1]}
                   />
                   <Bar 
                     dataKey="online" 
                     stackId="devices" 
                     fill="url(#onlineGradient)" 
-                    name="Online Devices" 
-                    radius={[2, 2, 0, 0]}
+                    radius={[1, 1, 0, 0]}
                   />
                 </BarChart>
               </ResponsiveContainer>
             </div>
             
-            <div className="flex items-center justify-center">
-              <div className="flex items-center space-x-8 bg-card rounded-lg border border-border px-6 py-3 shadow-sm">
-                <div className="flex items-center space-x-3">
-                  <div className="w-4 h-4 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-sm shadow-sm"></div>
-                  <span className="text-sm font-semibold text-card-foreground">Online Devices</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-4 h-4 bg-gradient-to-r from-red-500 to-red-600 rounded-sm shadow-sm"></div>
-                  <span className="text-sm font-semibold text-card-foreground">Offline Devices</span>
-                </div>
-                <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                  <Clock className="h-4 w-4" />
-                  <span>Period: {TIME_PERIODS[selectedPeriod].label}</span>
-                </div>
+            <div className="flex items-center justify-center gap-6 text-xs">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-emerald-500 rounded-sm"></div>
+                <span className="text-foreground">Online</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-red-500 rounded-sm"></div>
+                <span className="text-foreground">Offline</span>
+              </div>
+              <div className="flex items-center gap-1 text-muted-foreground">
+                <Clock className="h-3 w-3" />
+                <span>Period: {TIME_PERIODS[selectedPeriod].label}</span>
               </div>
             </div>
           </div>
         ) : (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-full flex items-center justify-center">
-              <Activity className="h-8 w-8 text-muted-foreground" />
-            </div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">No Timeline Data</h3>
-            <p className="text-muted-foreground">Start monitoring devices to see timeline data here.</p>
+          <div className="text-center py-8">
+            <Activity className="h-6 w-6 text-muted-foreground mx-auto mb-2" />
+            <h3 className="text-sm font-semibold text-foreground mb-1 compact-text">No Timeline Data</h3>
+            <p className="text-xs text-muted-foreground compact-text">Start monitoring devices to see timeline data.</p>
           </div>
         )}
       </CardContent>
